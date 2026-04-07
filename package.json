@@ -1,0 +1,13 @@
+{
+  "name": "mental-health-tracker-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "cd server && npm run start:dev",
+    "dev:client": "cd client && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
