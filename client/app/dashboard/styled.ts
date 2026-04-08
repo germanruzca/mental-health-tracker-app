@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 24px;
+const GridContainer = styled.div`
+  display: grid;
+  padding: 24px;
+  grid-template-columns: 1fr 3fr;
+  gap: 24px;
+`;
+
+const LeftContainer = styled.div`
+  margin: 0;
+  padding: 0;
 `;
 
 const Header = styled.div`
@@ -49,7 +55,7 @@ const RangeButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
-const AvgTitle = styled.h2`
+const LogsTitle = styled.h2`
   font-size: 20px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
@@ -64,6 +70,7 @@ const AvgContainer = styled.div`
   padding: 16px;
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 const AvgItem = styled.div`
@@ -83,16 +90,34 @@ const AvgLabel = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
+const StatusLabel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  padding: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+`;
+
+const GridContainerList = styled.div`
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+`;
+
 export {
-  Container,
+  GridContainer,
+  LeftContainer,
   Header,
   Title,
   Subtitle,
   RangeSelector,
   RangeButton,
-  AvgTitle,
+  LogsTitle,
   AvgContainer,
   AvgItem,
   AvgValue,
   AvgLabel,
+  GridContainerList,
+  StatusLabel,
 };

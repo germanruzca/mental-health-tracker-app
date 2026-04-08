@@ -3,75 +3,101 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import {
-  Container,
+  GridContainer,
+  LeftContainer,
   Header,
   Title,
   Subtitle,
   RangeSelector,
   RangeButton,
-  AvgTitle,
+  LogsTitle,
   AvgContainer,
   AvgItem,
   AvgValue,
   AvgLabel,
+  GridContainerList,
+  StatusLabel
 } from './styled';
-import { useUserLogs } from '@/hooks/useUserLogs';
+import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
+
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const [range, setRange] = useState<'week' | 'month'>('week');
   const { logs, loading } = useUserLogs(range);
 
-  const isEmpty = !loading && logs.length === 0;
-  const avgMood = !isEmpty
-    ? (logs.reduce((sum, currentLog) => sum + currentLog.moodRating, 0) / logs.length).toFixed(1)
-    : '-';
-  const avgSleep = !isEmpty
-    ? (logs.reduce((sum, currentLog) => sum + currentLog.sleepHours, 0) / logs.length).toFixed(1)
-    : '-';
-  const avgStress = !isEmpty
-    ? (logs.reduce((sum, currentLog) => sum + currentLog.stressLevel, 0) / logs.length).toFixed(1)
-    : '-';
+  if (loading) return <div>Loading...</div>;
 
-  const labelsToPrint = [
-    { label: 'Mood', value: avgMood },
-    { label: 'Sleep Hours', value: avgSleep },
-    { label: 'Stress Level', value: avgStress },
+  const avg = (key: keyof DailyLog) =>
+    (logs.reduce((sum, log) => sum + (log[key] as number), 0) / logs.length).toFixed(1) || '-';
+
+  const getAverages = (logs: DailyLog[]) => {
+    if (!logs.length) return null;
+    return {
+      'Mood': avg('moodRating'),
+      'Anxiety': avg('anxietyLevel'),
+      'Sleep': avg('sleepHours'),
+      'Sleep Quality': avg('sleepQuality'),
+      'Stress': avg('stressLevel'),
+      'Social Frequency': avg('socialFrequency'),
+      'Depression Score': avg('depressionScore'),
+      'Anxiety Score': avg('anxietyScore'),
+    };
+  };
+
+  const averagesValuesToPrint = [
+    { label: 'Mood', value: avg('moodRating') },
+    { label: 'Sleep Hours', value: avg('sleepHours') },
+    { label: 'Stress Level', value: avg('stressLevel') },
   ]
 
+  const generalStatus = getAverages(logs);
   return (
-    <Container>
-      <Header>
-        <Title>Good morning, {user?.name?.split(' ')[0]}!</Title>
-        <Subtitle>Let's see how your progress is going</Subtitle>
-      </Header>
+    <GridContainer>
+      <LeftContainer>
+        <Header>
+          <Title>Good morning, {user?.name?.split(' ')[0]}!</Title>
+          <Subtitle>Let's see how your progress is going</Subtitle>
+        </Header>
 
-      <RangeSelector>
-        <RangeButton
-          $isActive={range === 'week'}
-          onClick={() => setRange('week')}
-        >
-          This week
-        </RangeButton>
-        <RangeButton
-          $isActive={range === 'month'}
-          onClick={() => setRange('month')}
-        >
-          This month
-        </RangeButton>
-      </RangeSelector>
+        <RangeSelector>
+          <RangeButton
+            $isActive={range === 'week'}
+            onClick={() => setRange('week')}
+          >
+            This week
+          </RangeButton>
+          <RangeButton
+            $isActive={range === 'month'}
+            onClick={() => setRange('month')}
+          >
+            This month
+          </RangeButton>
+        </RangeSelector>
 
-      <AvgTitle>Average Statistics</AvgTitle>
-      <AvgContainer>
-        {
-          labelsToPrint.map(({ label, value }) => (
-            <AvgItem key={label}>
+        <LogsTitle>Average Statistics</LogsTitle>
+        <AvgContainer>
+          {
+            averagesValuesToPrint.map(({ label, value }) => (
+              <AvgItem key={label}>
+                <AvgValue>{value}</AvgValue>
+                <AvgLabel>{label}</AvgLabel>
+              </AvgItem>
+            ))
+          }
+        </AvgContainer>
+
+        <LogsTitle>General Status</LogsTitle>
+        <GridContainerList>
+          {generalStatus && Object.entries(generalStatus).map(([label, value]) =>
+            <StatusLabel key={label}>
               <AvgValue>{value}</AvgValue>
               <AvgLabel>{label}</AvgLabel>
-            </AvgItem>
-          ))
-        }
-      </AvgContainer>
-    </Container>
+            </StatusLabel>
+          )}
+        </GridContainerList>
+      </LeftContainer>
+      <div>Hola</div>
+    </GridContainer >
   );
 }
