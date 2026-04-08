@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserLogDto } from './dto/create-user-log.dto';
+import { UserLogsGateway } from './gateway/user-logs.gateway';
 
 @Injectable()
 export class UserLogsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private userLogsGateway: UserLogsGateway,
+  ) {}
 
   async create(userId: string, dto: CreateUserLogDto) {
     return this.prisma.dailyLog.create({
