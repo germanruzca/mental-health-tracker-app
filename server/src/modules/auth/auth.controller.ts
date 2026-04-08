@@ -3,6 +3,7 @@ import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { JWT_CONSTANTS } from './constants/jwt.constants';
+import { UserProfile } from './types/user.types';
 
 @Controller('auth')
 export class AuthController {
@@ -28,7 +29,8 @@ export class AuthController {
       const user = this.authService.verifyJWT(token);
       res.json({ user });
     } catch (error) {
-      res.status(401).json({ message: 'Invalid token' });
+      const err = error as Error;
+      res.status(401).json({ message: 'Invalid token', error: err.message });
     }
   }
 
@@ -38,7 +40,7 @@ export class AuthController {
     const googleUser = await this.authService.getGoogleUser(
       tokens.access_token || '',
     );
-    const user = await this.authService.findOrCreateUser({
+    const user: UserProfile = await this.authService.findOrCreateUser({
       email: googleUser.email,
       name: googleUser.name,
       picture: googleUser.picture,

@@ -5,6 +5,7 @@ import { TokenData } from 'google-auth-library';
 import axios from 'axios';
 import { GoogleUserResponse } from './types/google.types';
 import { ConfigService } from '@nestjs/config/dist/config.service';
+import { UserProfile } from './types/user.types';
 
 @Injectable()
 export class AuthService {
@@ -50,13 +51,7 @@ export class AuthService {
     return data;
   }
 
-  // eslint-disable-next-line
-  async findOrCreateUser(data: {
-    email: string;
-    name: string;
-    picture: string;
-  }) {
-    // eslint-disable-next-line
+  async findOrCreateUser(data: Omit<UserProfile, 'id'>) {
     return this.prisma.user.upsert({
       where: { email: data.email },
       update: { name: data.name, picture: data.picture },
@@ -64,10 +59,12 @@ export class AuthService {
     });
   }
 
-  generateJWT(user: { id: string; email: string }) {
+  generateJWT(user: UserProfile) {
     return this.jwtService.sign({
       sub: user.id,
       email: user.email,
+      name: user.name || '',
+      picture: user.picture || '',
     });
   }
 
