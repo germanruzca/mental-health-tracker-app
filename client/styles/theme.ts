@@ -2,14 +2,13 @@ import { DefaultTheme } from "styled-components";
 
 const theme: DefaultTheme = {
   colors: {
-    primary: "#F5F3FF",
+    primary: "#8B5CF6",
+    primaryLight: "#EDE9FE",
+    primaryLighter: "#F5F3FF",
+    primaryDark: "#5B21B6",
     secondary: "#EDE9FE",
     text: "#1C1917",
-    primaryLight: "#0070f3",
     textMuted: "#666",
-    navBarBackground: "#8B5CF6",
-    white: "#fff",
-    border: "#ddd",
   },
   borderRadius: {
     sm: "4px",
