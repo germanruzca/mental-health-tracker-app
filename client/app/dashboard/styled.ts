@@ -49,4 +49,50 @@ const RangeButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
-export { Container, Header, Title, Subtitle, RangeSelector, RangeButton };
+const AvgTitle = styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 16px;
+`;
+
+const AvgContainer = styled.div`
+  display: flex;
+  gap: 24px;
+  border: 1px solid ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.secondary};
+  padding: 16px;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  justify-content: center;
+`;
+
+const AvgItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const AvgValue = styled.span`
+  font-size: 24px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const AvgLabel = styled.span`
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export {
+  Container,
+  Header,
+  Title,
+  Subtitle,
+  RangeSelector,
+  RangeButton,
+  AvgTitle,
+  AvgContainer,
+  AvgItem,
+  AvgValue,
+  AvgLabel,
+};
