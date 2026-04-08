@@ -4,10 +4,42 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(uuid(4))
+  email     String     @unique
+  name      String?
+  picture   String?
+  createdAt DateTime   @default(now()) @map("created_at")
+  logs      DailyLog[]
+
+  @@map("users")
+}
+
+model DailyLog {
+  id               String   @id @default(uuid(4))
+  userId           String   @map("user_id")
+  date             DateTime @default(now())
+  moodRating       Int      @map("mood_rating")
+  anxietyLevel     Int      @map("anxiety_level")
+  sleepHours       Float    @map("sleep_hours")
+  sleepQuality     Int      @map("sleep_quality")
+  sleepDisturbance Boolean  @map("sleep_disturbance")
+  activityType     String?  @map("activity_type")
+  activityDuration Int?     @map("activity_duration")
+  socialFrequency  Int      @map("social_frequency")
+  stressLevel      Int      @map("stress_level")
+  depressionScore  Int      @map("depression_score")
+  anxietyScore     Int      @map("anxiety_score")
+  createdAt        DateTime @default(now()) @map("created_at")
+  user             User     @relation(fields: [userId], references: [id])
+
+  @@map("daily_logs")
 }
