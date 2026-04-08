@@ -1,12 +1,15 @@
 'use client';
 
-import Link from 'next/link';
 import { Avatar, Logo, LogoIcon, LogoText, Nav, NavRight, SessionButton, UserName } from './styled';
 import { useAuth } from '@/context/AuthContext';
+import { usePathname } from 'next/navigation';
+
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { user, logout, loading } = useAuth();
 
+  if (pathname === '/') return null;
   if (loading) return null;
   return (
     <Nav>
@@ -17,17 +20,11 @@ export default function Navbar() {
         </div>
       </Logo>
 
-      {user ? (
+      {user && (
         <NavRight>
           <UserName>{user.name}</UserName>
           {user?.picture && <Avatar src={user.picture} alt={user.name} />}
           <SessionButton onClick={logout}>Sign out</SessionButton>
-        </NavRight>
-      ) : (
-        <NavRight>
-          <SessionButton>
-            <Link href="/login">Sign in</Link>
-          </SessionButton>
         </NavRight>
       )}
     </Nav>

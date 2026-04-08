@@ -24,7 +24,7 @@ const LogoIcon = styled.span`
 const LogoText = styled.span`
   font-size: 18px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primaryLight};
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 `;
 
