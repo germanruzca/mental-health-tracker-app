@@ -30,7 +30,6 @@ export function useUserLogs(range?: "week" | "month") {
       const { data } = await api.get("/logs", {
         params: range ? { range } : {},
       });
-      console.log(data);
       setLogs(data);
     } catch {
       setError("Failed to fetch logs");
