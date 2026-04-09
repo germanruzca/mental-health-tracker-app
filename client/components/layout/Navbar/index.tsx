@@ -13,7 +13,7 @@ export default function Navbar() {
   if (loading) return null;
   return (
     <Nav>
-      <Logo href="/">
+      <Logo href="/dashboard">
         <LogoIcon>🧠</LogoIcon>
         <div>
           <LogoText>Mental Health Tracker App</LogoText>

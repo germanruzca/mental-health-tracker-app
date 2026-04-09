@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 const Nav = styled.nav`
-  background: ${({ theme }) => theme.colors.navBarBackground};
+  background: ${({ theme }) => theme.colors.primary};
   padding: 0 24px;
   height: 64px;
   display: flex;
@@ -43,7 +43,7 @@ const Avatar = styled.img`
 
 const UserName = styled.span`
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.secondary};
   font-weight: 600;
 `;
 
@@ -59,7 +59,7 @@ const SessionButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primaryLight};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.textMuted};
+    background: ${({ theme }) => theme.colors.secondary};
     color: ${({ theme }) => theme.colors.text};
   }
 `;
