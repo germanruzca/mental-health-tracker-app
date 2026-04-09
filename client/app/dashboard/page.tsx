@@ -27,7 +27,7 @@ export default function DashboardPage() {
   const [showForm, setShowForm] = useState(false);
   const { user } = useAuth();
   const [range, setRange] = useState<'week' | 'month'>('week');
-  const { logs, loading, refetch } = useUserLogs(range);
+  const { logs, loading } = useUserLogs(range);
 
   if (loading) return <div>Loading...</div>;
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import api from "@/lib/api";
+import { toast } from "sonner";
 
 export interface DailyLog {
   id: string;
@@ -33,6 +34,7 @@ export function useUserLogs(range?: "week" | "month") {
       setLogs(data);
     } catch {
       setError("Failed to fetch logs");
+      toast.error("Failed to fetch logs");
     } finally {
       setLoading(false);
     }
@@ -42,5 +44,5 @@ export function useUserLogs(range?: "week" | "month") {
     getLogsFromAPI();
   }, [getLogsFromAPI]);
 
-  return { logs, loading, error, refetch: getLogsFromAPI };
+  return { logs, loading, error };
 }

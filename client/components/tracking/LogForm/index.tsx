@@ -19,6 +19,7 @@ import {
   ButtonRow,
   Button
 } from './styled';
+import { toast } from 'sonner';
 
 const STEPS = [
   {
@@ -54,10 +55,11 @@ const INITIAL_STATE = {
 };
 
 interface Props {
+  onSuccess: () => void;
   onCancel: () => void;
 }
 
-export default function TrackingForm({ onCancel }: Props) {
+export default function TrackingForm({ onSuccess, onCancel }: Props) {
   const [step, setStep] = useState(0);
   const [data, setData] = useState(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
@@ -77,10 +79,10 @@ export default function TrackingForm({ onCancel }: Props) {
         activityDuration: data.activityDuration || undefined,
         activityType: data.activityType || undefined,
       });
-      alert('Log saved successfully!');
-      onCancel();
+      onSuccess()
     } catch {
       console.error('Failed to submit log');
+      toast.error('Failed to submit log');
     } finally {
       setLoading(false);
     }
