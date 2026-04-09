@@ -44,5 +44,7 @@ export function useUserLogs(range?: "week" | "month") {
     getLogsFromAPI();
   }, [getLogsFromAPI]);
 
-  return { logs, loading, error };
+  const addNewLog = (log: DailyLog) => setLogs((prev) => [...prev, log]);
+
+  return { logs, loading, error, addLog: addNewLog };
 }

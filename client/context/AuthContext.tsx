@@ -24,13 +24,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     api.get('/auth/me')
-      .then(({ data }) => setUser(data.user))
+      .then(({ data }) => setUser(data))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
   const logout = async () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_NEST_API_URL}/auth/logout`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`;
   };
 
   return (

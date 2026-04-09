@@ -1,11 +1,13 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
-import type { Response } from 'express';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { JWT_CONSTANTS } from './constants/jwt.constants';
 import { UserProfile } from './types/user.types';
+import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Controller('auth')
+@UseGuards(JwtAuthGuard)
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -19,19 +21,8 @@ export class AuthController {
   }
 
   @Get('me')
-  getProfile(@Res() res: Response) {
-    const token = res.req.cookies[JWT_CONSTANTS.ACCESS_TOKEN];
-    if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    try {
-      const user = this.authService.verifyJWT(token);
-      res.json({ user });
-    } catch (error) {
-      const err = error as Error;
-      res.status(401).json({ message: 'Invalid token', error: err.message });
-    }
+  getProfile(@Req() req: Request) {
+    return req.user;
   }
 
   @Get('google/callback')

@@ -6,7 +6,7 @@ import { MainContainer, Description, WelcomeText, SessionButton, TitleAppName } 
 export default function Home() {
 
   const handleGoogleSignIn = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_NEST_API_URL}/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (

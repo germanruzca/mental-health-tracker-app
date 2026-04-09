@@ -18,8 +18,13 @@ export class UserLogsGateway
   @WebSocketServer()
   server!: Server;
 
-  handleConnection(client: Socket) {
-    console.log(`Client connected: ${client.id}`);
+  async handleConnection(client: Socket) {
+    const userId = client.handshake.query.userId as string;
+    if (userId) {
+      await client.join(`user:${userId}`);
+    } else {
+      console.warn(`Client ${client.id} connected without userId`);
+    }
   }
 
   handleDisconnect(client: Socket) {
@@ -27,6 +32,6 @@ export class UserLogsGateway
   }
 
   notifyNewLog(userId: string, log: any) {
-    this.server.emit(`new_log:${userId}`, log);
+    this.server.to(`user:${userId}`).emit(`new_log:${userId}`, log);
   }
 }

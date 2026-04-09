@@ -11,12 +11,15 @@ export class UserLogsService {
   ) {}
 
   async create(userId: string, dto: CreateUserLogDto) {
-    return this.prisma.dailyLog.create({
+    const log = await this.prisma.dailyLog.create({
       data: {
         userId,
         ...dto,
       },
     });
+
+    this.userLogsGateway.notifyNewLog(userId, log);
+    return log;
   }
 
   async findAll(userId: string) {

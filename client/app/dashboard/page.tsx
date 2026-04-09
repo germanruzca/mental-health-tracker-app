@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import {
   GridContainer,
@@ -21,15 +21,23 @@ import {
 import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
 import TrackingChart from '@/components/tracking/TrackingChart';
 import TrackingFormModal from '@/components/tracking/LogForm/modal';
+import { useSocket } from '@/hooks/useSocket';
 
 
 export default function DashboardPage() {
   const [showForm, setShowForm] = useState(false);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [range, setRange] = useState<'week' | 'month'>('week');
-  const { logs, loading } = useUserLogs(range);
+  const { logs, loading: logsLoading, addLog } = useUserLogs(range);
 
-  if (loading) return <div>Loading...</div>;
+  const handleNewLog = useCallback((log: DailyLog) => {
+    addLog(log);
+  }, [addLog]);
+
+  useSocket(user?.id, handleNewLog);
+
+
+  if (authLoading && logsLoading) return <div>Loading...</div>;
 
   const avg = (key: keyof DailyLog) =>
     (logs.reduce((sum, log) => sum + (log[key] as number), 0) / logs.length).toFixed(1) || '-';
