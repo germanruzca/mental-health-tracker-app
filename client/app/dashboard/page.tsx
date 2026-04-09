@@ -16,16 +16,18 @@ import {
   AvgValue,
   AvgLabel,
   GridContainerList,
-  StatusLabel
+  StatusLabel,
 } from './styled';
 import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
 import TrackingChart from '@/components/tracking/TrackingChart';
+import TrackingFormModal from '@/components/tracking/LogForm/modal';
 
 
 export default function DashboardPage() {
+  const [showForm, setShowForm] = useState(false);
   const { user } = useAuth();
   const [range, setRange] = useState<'week' | 'month'>('week');
-  const { logs, loading } = useUserLogs(range);
+  const { logs, loading, refetch } = useUserLogs(range);
 
   if (loading) return <div>Loading...</div>;
 
@@ -58,7 +60,7 @@ export default function DashboardPage() {
       <Container>
         <Header>
           <Title>Good morning, {user?.name?.split(' ')[0]}!</Title>
-          <Subtitle>Let's see how your progress is going</Subtitle>
+          <Subtitle>{`Let's see how your progress is going`}</Subtitle>
         </Header>
 
         <RangeSelector>
@@ -99,8 +101,13 @@ export default function DashboardPage() {
         </GridContainerList>
       </Container>
       <Container>
-        <TrackingChart logs={logs} />
+        <TrackingChart logs={logs} setShowForm={setShowForm} />
       </Container>
+      {showForm && (
+        <TrackingFormModal
+          onClose={() => setShowForm(false)}
+        />
+      )}
     </GridContainer >
   );
 }
