@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import {
   GridContainer,
-  LeftContainer,
+  Container,
   Header,
   Title,
   Subtitle,
@@ -19,6 +19,7 @@ import {
   StatusLabel
 } from './styled';
 import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
+import TrackingChart from '@/components/tracking/TrackingChart';
 
 
 export default function DashboardPage() {
@@ -54,7 +55,7 @@ export default function DashboardPage() {
   const generalStatus = getAverages(logs);
   return (
     <GridContainer>
-      <LeftContainer>
+      <Container>
         <Header>
           <Title>Good morning, {user?.name?.split(' ')[0]}!</Title>
           <Subtitle>Let's see how your progress is going</Subtitle>
@@ -96,8 +97,10 @@ export default function DashboardPage() {
             </StatusLabel>
           )}
         </GridContainerList>
-      </LeftContainer>
-      <div>Hola</div>
+      </Container>
+      <Container>
+        <TrackingChart logs={logs} />
+      </Container>
     </GridContainer >
   );
 }

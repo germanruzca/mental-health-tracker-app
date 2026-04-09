@@ -7,7 +7,7 @@ const GridContainer = styled.div`
   gap: 24px;
 `;
 
-const LeftContainer = styled.div`
+const Container = styled.div`
   margin: 0;
   padding: 0;
 `;
@@ -107,7 +107,7 @@ const GridContainerList = styled.div`
 
 export {
   GridContainer,
-  LeftContainer,
+  Container,
   Header,
   Title,
   Subtitle,
