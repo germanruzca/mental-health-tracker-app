@@ -105,6 +105,18 @@ const GridContainerList = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 `;
 
+const LoadingWrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingText = styled.p`
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
 export {
   GridContainer,
   Container,
@@ -120,4 +132,6 @@ export {
   AvgLabel,
   GridContainerList,
   StatusLabel,
+  LoadingWrapper,
+  LoadingText,
 };

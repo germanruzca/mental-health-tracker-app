@@ -17,12 +17,22 @@ import {
   AvgLabel,
   GridContainerList,
   StatusLabel,
+  LoadingWrapper,
+  LoadingText,
 } from './styled';
 import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
 import TrackingChart from '@/components/tracking/TrackingChart';
 import TrackingFormModal from '@/components/tracking/LogForm/modal';
 import { useSocket } from '@/hooks/useSocket';
 
+
+function Loading() {
+  return (
+    <LoadingWrapper>
+      <LoadingText>Loading...</LoadingText>
+    </LoadingWrapper>
+  );
+}
 
 export default function DashboardPage() {
   const [showForm, setShowForm] = useState(false);
@@ -37,7 +47,7 @@ export default function DashboardPage() {
   useSocket(user?.id, handleNewLog);
 
 
-  if (authLoading && logsLoading) return <div>Loading...</div>;
+  if (authLoading && logsLoading) return <Loading />;
 
   const avg = (key: keyof DailyLog) =>
     (logs.reduce((sum, log) => sum + (log[key] as number), 0) / logs.length).toFixed(1) || '-';
