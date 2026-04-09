@@ -24,6 +24,7 @@ import { DailyLog, useUserLogs } from '@/hooks/useUserLogs';
 import TrackingChart from '@/components/tracking/TrackingChart';
 import TrackingFormModal from '@/components/tracking/LogForm/modal';
 import { useSocket } from '@/hooks/useSocket';
+import { EmptyState } from '@/components/layout/EmptyState';
 
 
 function Loading() {
@@ -75,7 +76,14 @@ export default function DashboardPage() {
   const generalStatus = getAverages(logs);
   return (
     <GridContainer>
-      <Container>
+      {showForm && (
+        <TrackingFormModal
+          onClose={() => setShowForm(false)}
+        />
+      )}
+      {!logs.length && !logsLoading ? (
+        <EmptyState setShowForm={setShowForm} />
+      ) : (<><Container>
         <Header>
           <Title>Good morning, {user?.name?.split(' ')[0]}!</Title>
           <Subtitle>{`Let's see how your progress is going`}</Subtitle>
@@ -118,13 +126,10 @@ export default function DashboardPage() {
           )}
         </GridContainerList>
       </Container>
-      <Container>
-        <TrackingChart logs={logs} setShowForm={setShowForm} />
-      </Container>
-      {showForm && (
-        <TrackingFormModal
-          onClose={() => setShowForm(false)}
-        />
+        <Container>
+          <TrackingChart logs={logs} setShowForm={setShowForm} />
+        </Container>
+      </>
       )}
     </GridContainer >
   );

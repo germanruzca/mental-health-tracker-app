@@ -7,7 +7,6 @@ import { UserProfile } from './types/user.types';
 import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Controller('auth')
-@UseGuards(JwtAuthGuard)
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -21,6 +20,7 @@ export class AuthController {
   }
 
   @Get('me')
+  @UseGuards(JwtAuthGuard)
   getProfile(@Req() req: Request) {
     return req.user;
   }
