@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { MetricSelector, MetricButton } from './styled';
+import { GridContainer, MetricSelector, MetricButton, LogButton, LogButtonContainer, ChartContainer } from './styled';
 import { DailyLog } from '@/hooks/useUserLogs';
 
 const METRICS = [
@@ -24,7 +24,7 @@ const METRICS = [
 ];
 
 
-export default function TrackingChart({ logs }: { logs: DailyLog[] }) {
+export default function TrackingChart({ logs, setShowForm }: { logs: DailyLog[], setShowForm: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [selectedMetrics, setSelectedMetrics] = useState([
     'moodRating',
     'sleepHours',
@@ -53,7 +53,7 @@ export default function TrackingChart({ logs }: { logs: DailyLog[] }) {
   }));
 
   return (
-    <div>
+    <GridContainer>
       <MetricSelector>
         {METRICS.map(metric => (
           <MetricButton
@@ -66,43 +66,47 @@ export default function TrackingChart({ logs }: { logs: DailyLog[] }) {
           </MetricButton>
         ))}
       </MetricSelector>
-
-      <ResponsiveContainer width="100%" height={580}>
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 12, fill: '#9CA3AF' }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fontSize: 12, fill: '#9CA3AF' }}
-            axisLine={false}
-            tickLine={false}
-            domain={[0, 10]}
-          />
-          <Tooltip
-            contentStyle={{
-              borderRadius: '8px',
-              border: '1px solid #E5E7EB',
-            }}
-          />
-          <Legend />
-          {METRICS.filter(m => selectedMetrics.includes(m.key)).map(metric => (
-            <Line
-              key={metric.key}
-              type="monotone"
-              dataKey={metric.key}
-              name={metric.label}
-              stroke={metric.color}
-              strokeWidth={2}
-              dot={{ r: 4, fill: metric.color }}
-              activeDot={{ r: 6 }}
+      <LogButtonContainer>
+        <LogButton onClick={() => setShowForm(true)}>+ Add Log</LogButton>
+      </LogButtonContainer>
+      <ChartContainer>
+        <ResponsiveContainer width="100%" height={580}>
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 12, fill: '#9CA3AF' }}
+              axisLine={false}
+              tickLine={false}
             />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+            <YAxis
+              tick={{ fontSize: 12, fill: '#9CA3AF' }}
+              axisLine={false}
+              tickLine={false}
+              domain={[0, 10]}
+            />
+            <Tooltip
+              contentStyle={{
+                borderRadius: '8px',
+                border: '1px solid #E5E7EB',
+              }}
+            />
+            <Legend />
+            {METRICS.filter(m => selectedMetrics.includes(m.key)).map(metric => (
+              <Line
+                key={metric.key}
+                type="monotone"
+                dataKey={metric.key}
+                name={metric.label}
+                stroke={metric.color}
+                strokeWidth={2}
+                dot={{ r: 4, fill: metric.color }}
+                activeDot={{ r: 6 }}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+    </GridContainer>
   );
 }
