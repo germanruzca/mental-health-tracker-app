@@ -136,4 +136,4 @@ Open [http://localhost:3001](http://localhost:3001)
 
 ## License
 
-© 2026 Germán Ruiz. All rights reserved. This repository was created as a technical assessment.
+© 2026 Germán Ruiz. All rights reserved.
